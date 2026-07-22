@@ -5,7 +5,7 @@
 <h1 align="center">Classic Launchpad</h1>
 
 <p align="center">
-  <strong>把你熟悉的经典启动台，带回 macOS 26。</strong>
+  <strong>把你熟悉的经典启动台，带回 macOS 26</strong>
 </p>
 
 <p align="center">
@@ -27,15 +27,6 @@
   <img src="https://img.shields.io/badge/数据处理-仅限本机-31C653?style=flat-square" alt="数据仅在本机处理">
   <img src="https://img.shields.io/badge/版本-1.0.0-blue?style=flat-square" alt="版本 1.0.0">
   <img src="https://img.shields.io/badge/许可证-MIT-yellow?style=flat-square" alt="MIT License">
-</p>
-
-<p align="center">
-  <a href="#highlights">项目亮点</a> ·
-  <a href="#showcase">界面展示</a> ·
-  <a href="#download">下载安装</a> ·
-  <a href="#controls">操作方式</a> ·
-  <a href="#restore-layout">恢复布局</a> ·
-  <a href="#privacy">隐私说明</a>
 </p>
 
 <p align="center">
