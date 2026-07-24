@@ -25,7 +25,7 @@
 <p align="center">
   <img src="https://img.shields.io/badge/第三方依赖-0-31C653?style=flat-square" alt="无第三方依赖">
   <img src="https://img.shields.io/badge/数据处理-仅限本机-31C653?style=flat-square" alt="数据仅在本机处理">
-  <img src="https://img.shields.io/badge/版本-1.0.0-blue?style=flat-square" alt="版本 1.0.0">
+  <img src="https://img.shields.io/badge/版本-1.1.0-blue?style=flat-square" alt="版本 1.1.0">
   <img src="https://img.shields.io/badge/许可证-MIT-yellow?style=flat-square" alt="MIT License">
 </p>
 
@@ -58,6 +58,13 @@
 
 Classic Launchpad 是为 macOS 26 开发的独立第三方应用。它不会替换或修改 macOS 系统组件，只负责提供一个熟悉、可自定义的应用启动入口。
 
+### 1.1.0 新功能
+
+- 新增“显示系统应用”开关，默认开启
+- 新增默认顺序、按名称、最近添加和自定义排序；中文名称支持按拼音 A–Z 排列
+- 新增可自定义的触发角，支持四个角落、组合键触发及系统触发角冲突提示
+- Classic Launchpad 现在可以显示在其他应用所在的全屏空间中
+
 ### 功能一览
 
 | | |
@@ -65,6 +72,7 @@ Classic Launchpad 是为 macOS 26 开发的独立第三方应用。它不会替�
 | 🔍 **即时搜索**<br>按本地化名称或 Bundle Identifier 查找应用，直接输入即可开始。 | 📁 **文件夹整理**<br>叠放图标创建文件夹，支持重命名、内部排序和移出应用。 |
 | 🖱️ **拖放与分页**<br>页内排序、边缘跨页拖动、触控板横向滑动和分页圆点。 | ⌨️ **完整键盘操作**<br>方向键选择、Return 打开、Escape 返回、Command + 方向键翻页。 |
 | 🔄 **自动发现应用**<br>扫描标准应用目录，并通过 Spotlight 跟踪本机应用变化。 | 💾 **布局持久化**<br>自动保存顺序、页面、文件夹名称和自定义全局快捷键。 |
+| ⚙️ **显示与排序**<br>可选择是否显示系统应用，并支持默认、名称、最近添加和自定义排序。 | ◲ **触发角启动**<br>可选择一个屏幕角落，支持组合键触发，并可在其他应用的全屏空间中显示。 |
 | ✨ **原生视觉效果**<br>从当前桌面壁纸生成模糊背景，并适配多显示器与“减弱动态效果”。 | 🗑️ **安全移除**<br>仅允许符合条件的 Mac App Store 应用在二次确认后移到废纸篓。 |
 
 <a id="showcase"></a>
@@ -103,7 +111,7 @@ Classic Launchpad 是为 macOS 26 开发的独立第三方应用。它不会替�
 - macOS 26.0 或更高版本
 - 安装包无需 Xcode 或第三方依赖
 
-首次启动后，Classic Launchpad 会自动显示。应用以辅助应用方式运行，不会在 Dock 中常驻。
+首次启动后，Classic Launchpad 会自动显示。应用会在 Dock 中显示，可按 Command + Q 退出。
 
 <a id="quick-start"></a>
 
@@ -159,7 +167,11 @@ open ClassicLaunchpad.xcodeproj
   <img src="https://raw.githubusercontent.com/Dreaming9420/Classic-Launchpad-macOS/main/assets/readme/settings.png" width="560" alt="Classic Launchpad 设置界面">
 </p>
 
-在设置中可以录制新的全局快捷键，无需辅助功能权限。
+在设置中可以录制新的全局快捷键、选择是否显示系统应用，并设置应用排序方式和触发角，无需辅助功能权限。
+
+排序方式包括“默认顺序”“按名称”“最近添加”和“自定义”。按名称排序时，中文名称会转换为拼音，与英文名称一起按 A–Z 排列。手动拖动应用、调整文件夹后会自动切换为“自定义”；从“自定义”切换到其他排序方式时会先提示确认。
+
+触发角可以选择“关闭”“左上”“右上”“左下”或“右下”。将指针移到已启用的角落会立即显示 Classic Launchpad；按住 Command、Option、Control 或 Shift 选择时，可以设置组合键触发。如果对应位置已被 macOS 系统触发角占用，应用会提示先在“桌面与程序坞”中关闭该系统触发角。
 
 ### 如何恢复默认布局
 

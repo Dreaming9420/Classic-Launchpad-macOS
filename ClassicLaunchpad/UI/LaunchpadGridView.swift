@@ -673,9 +673,9 @@ final class LaunchpadGridView: NSView {
         } else {
             targetFrame = destinationFrame(for: stableID, in: finalDocument)
         }
-        finalDocument.isCustomized = finalDocument.items != originalDocument.items
-            ? true
-            : originalDocument.isCustomized
+        finalDocument.sortMode = finalDocument.items != originalDocument.items
+            ? .custom
+            : originalDocument.sortMode
         let didMutate = finalDocument != originalDocument
         cancelDragScheduling()
 

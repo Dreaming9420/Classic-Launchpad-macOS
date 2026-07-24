@@ -38,7 +38,7 @@ final class FolderInteractionController {
             folder.applications.append(draggedIdentity)
             items[adjustedTarget] = .folder(folder)
         }
-        return LayoutDocument(items: items, isCustomized: true, shortcut: document.shortcut)
+        return LayoutDocument(items: items, sortMode: .custom, shortcut: document.shortcut)
     }
 
     func rename(folderID: UUID, name: String, in document: LayoutDocument) -> LayoutDocument {
@@ -52,7 +52,7 @@ final class FolderInteractionController {
         let trimmed = name.trimmingCharacters(in: .whitespacesAndNewlines)
         folder.name = trimmed.isEmpty ? DefaultFolderName.value : trimmed
         items[index] = .folder(folder)
-        return LayoutDocument(items: items, isCustomized: true, shortcut: document.shortcut)
+        return LayoutDocument(items: items, sortMode: .custom, shortcut: document.shortcut)
     }
 
     func extract(
@@ -78,7 +78,7 @@ final class FolderInteractionController {
             }
         }
         items.insert(.application(identity), at: min(index + 1, items.count))
-        return LayoutDocument(items: items, isCustomized: true, shortcut: document.shortcut)
+        return LayoutDocument(items: items, sortMode: .custom, shortcut: document.shortcut)
     }
 
     func reorder(
@@ -101,7 +101,7 @@ final class FolderInteractionController {
         }
         folder.applications = applications
         items[index] = .folder(folder)
-        return LayoutDocument(items: items, isCustomized: true, shortcut: document.shortcut)
+        return LayoutDocument(items: items, sortMode: .custom, shortcut: document.shortcut)
     }
 }
 

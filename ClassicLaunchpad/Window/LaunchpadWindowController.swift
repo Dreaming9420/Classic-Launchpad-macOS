@@ -11,6 +11,15 @@ final class LaunchpadWindowController: NSWindowController, LaunchpadRootViewDele
     private let applicationLauncher: ApplicationLauncher
     private let layoutStore = LayoutStore()
     private let layoutMerger = LayoutMerger()
+    private let hotCornerStore: HotCornerStore
+    private let systemHotCornerReader = SystemHotCornerReader()
+    private lazy var hotCornerManager: HotCornerManager = {
+        let manager = HotCornerManager()
+        manager.handler = { [weak self] in
+            self?.show()
+        }
+        return manager
+    }()
     private var rootView: LaunchpadRootView?
     private var savedPresentationOptions: NSApplication.PresentationOptions?
     private(set) var isPresented = false
@@ -21,11 +30,18 @@ final class LaunchpadWindowController: NSWindowController, LaunchpadRootViewDele
     private var hasLoadedSavedDocument = false
     private var activeDisplayID: CGDirectDisplayID?
     private var settingsWindowController: SettingsWindowController?
+    private var showSystemApplications = UserDefaults.standard.object(
+        forKey: PreferenceKey.showSystemApplications
+    ) as? Bool ?? true
+    private var hotCornerConfiguration: HotCornerConfiguration
     var shortcutRegistrar: ((HotKeyConfiguration) -> Result<Void, HotKeyRegistrationError>)?
 
     init(iconRepository: IconRepository, applicationLauncher: ApplicationLauncher) {
+        let hotCornerStore = HotCornerStore()
         self.iconRepository = iconRepository
         self.applicationLauncher = applicationLauncher
+        self.hotCornerStore = hotCornerStore
+        hotCornerConfiguration = hotCornerStore.load()
         super.init(window: nil)
     }
 
@@ -37,21 +53,42 @@ final class LaunchpadWindowController: NSWindowController, LaunchpadRootViewDele
         isPresented ? hide() : show()
     }
 
+    func startHotCornerMonitoring() {
+        refreshHotCornerMonitoring()
+        hotCornerManager.start()
+    }
+
+    func stopHotCornerMonitoring() {
+        hotCornerManager.stop()
+    }
+
     func showSettings() {
         hideImmediately()
         let configuration = snapshot?.document.shortcut ?? .defaultConfiguration
+        let hotCornerConflicts = refreshHotCornerMonitoring()
         let controller: SettingsWindowController
         if let settingsWindowController {
             controller = settingsWindowController
-            controller.update(configuration: configuration)
+            controller.update(
+                configuration: configuration,
+                showSystemApplications: showSystemApplications,
+                sortMode: snapshot?.document.sortMode ?? .defaultOrder,
+                hotCornerConfiguration: hotCornerConfiguration
+            )
         } else {
-            controller = SettingsWindowController(configuration: configuration)
+            controller = SettingsWindowController(
+                configuration: configuration,
+                showSystemApplications: showSystemApplications,
+                sortMode: snapshot?.document.sortMode ?? .defaultOrder,
+                hotCornerConfiguration: hotCornerConfiguration
+            )
             controller.delegate = self
             settingsWindowController = controller
         }
         NSApp.activate(ignoringOtherApps: true)
         controller.showWindow(nil)
         controller.window?.makeKeyAndOrderFront(nil)
+        controller.presentSystemHotCornerConflict(hotCornerConflicts)
     }
 
     func show() {
@@ -71,8 +108,8 @@ final class LaunchpadWindowController: NSWindowController, LaunchpadRootViewDele
         activeDisplayID = displayID(for: screen)
         savedPresentationOptions = NSApp.presentationOptions
         NSApp.presentationOptions.formUnion([.autoHideDock, .autoHideMenuBar])
-        NSApp.activate(ignoringOtherApps: true)
-        panel.makeKeyAndOrderFront(nil)
+        panel.orderFrontRegardless()
+        panel.makeKey()
         rootView.focusInitialResponder()
         if let snapshot {
             rootView.apply(snapshot, animated: false)
@@ -137,6 +174,16 @@ final class LaunchpadWindowController: NSWindowController, LaunchpadRootViewDele
     private func displayID(for screen: NSScreen) -> CGDirectDisplayID? {
         (screen.deviceDescription[NSDeviceDescriptionKey("NSScreenNumber")] as? NSNumber)
             .map { CGDirectDisplayID($0.uint32Value) }
+    }
+
+    @discardableResult
+    private func refreshHotCornerMonitoring() -> Set<HotCornerPosition> {
+        let conflicts = systemHotCornerReader.conflicts(for: hotCornerConfiguration)
+        hotCornerManager.update(
+            configuration: hotCornerConfiguration,
+            systemConflicts: conflicts
+        )
+        return conflicts
     }
 
     func launchpadRootViewRequestedClose(_ rootView: LaunchpadRootView) {
@@ -240,7 +287,7 @@ final class LaunchpadWindowController: NSWindowController, LaunchpadRootViewDele
         }
         applyUserDocument(LayoutDocument(
             items: items,
-            isCustomized: true,
+            sortMode: .custom,
             shortcut: snapshot.document.shortcut
         ))
     }
@@ -285,7 +332,10 @@ extension LaunchpadWindowController: ApplicationCatalogDelegate {
     }
 
     private func mergeCurrentApplications() {
-        let snapshot = layoutMerger.merge(saved: savedDocument, applications: applications)
+        let snapshot = layoutMerger.merge(
+            saved: savedDocument,
+            applications: displayedApplications
+        )
         self.snapshot = snapshot
         savedDocument = snapshot.document
         rootView?.apply(snapshot, animated: true)
@@ -300,6 +350,10 @@ extension LaunchpadWindowController: ApplicationCatalogDelegate {
                 Self.logger.error("Unable to save the application layout: \(error.localizedDescription, privacy: .public)")
             }
         }
+    }
+
+    private var displayedApplications: [InstalledApplication] {
+        showSystemApplications ? applications : applications.filter { !$0.isSystemApplication }
     }
 
 }
@@ -317,8 +371,66 @@ extension LaunchpadWindowController: SettingsWindowControllerDelegate {
         return .success(())
     }
 
+    func settingsWindowController(
+        _ controller: SettingsWindowController,
+        didChangeShowSystemApplications isEnabled: Bool
+    ) {
+        guard showSystemApplications != isEnabled else { return }
+        showSystemApplications = isEnabled
+        UserDefaults.standard.set(isEnabled, forKey: PreferenceKey.showSystemApplications)
+        if hasLoadedSavedDocument {
+            mergeCurrentApplications()
+        }
+    }
+
+    func settingsWindowController(
+        _ controller: SettingsWindowController,
+        didChangeSortMode sortMode: ApplicationSortMode
+    ) {
+        guard let document = snapshot?.document, document.sortMode != sortMode else { return }
+        let shortcut = document.shortcut
+        switch sortMode {
+        case .defaultOrder:
+            applyUserDocument(layoutMerger.makeDefault(displayedApplications, shortcut: shortcut))
+        case .name:
+            applyUserDocument(layoutMerger.makeNameSorted(displayedApplications, shortcut: shortcut))
+        case .recentlyAdded:
+            applyUserDocument(layoutMerger.makeRecentlyAdded(displayedApplications, shortcut: shortcut))
+        case .custom:
+            var customizedDocument = document
+            customizedDocument.sortMode = .custom
+            applyUserDocument(customizedDocument)
+        }
+    }
+
+    func settingsWindowController(
+        _ controller: SettingsWindowController,
+        requestedHotCorner position: HotCornerPosition?,
+        assignment: HotCornerAssignment
+    ) -> HotCornerUpdateResult {
+        guard
+            let position
+        else {
+            hotCornerConfiguration.select(nil, assignment: .disabled)
+            hotCornerStore.save(hotCornerConfiguration)
+            refreshHotCornerMonitoring()
+            return .applied
+        }
+        guard !systemHotCornerReader.isConfigured(position) else {
+            return .systemConflict
+        }
+        hotCornerConfiguration.select(position, assignment: assignment)
+        hotCornerStore.save(hotCornerConfiguration)
+        refreshHotCornerMonitoring()
+        return .applied
+    }
+
     func settingsWindowControllerRequestedDefaultLayout(_ controller: SettingsWindowController) {
         let shortcut = snapshot?.document.shortcut ?? .defaultConfiguration
-        applyUserDocument(layoutMerger.makeDefault(applications, shortcut: shortcut))
+        applyUserDocument(layoutMerger.makeDefault(displayedApplications, shortcut: shortcut))
     }
+}
+
+private enum PreferenceKey {
+    static let showSystemApplications = "showSystemApplications"
 }

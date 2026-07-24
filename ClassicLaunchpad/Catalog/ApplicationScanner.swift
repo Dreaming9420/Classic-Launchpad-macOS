@@ -12,7 +12,6 @@ final class ApplicationScanner {
         static let packageType = "CFBundlePackageType"
         static let applicationPackageType = "APPL"
         static let backgroundOnly = "LSBackgroundOnly"
-        static let uiElement = "LSUIElement"
         static let shortVersion = "CFBundleShortVersionString"
         static let buildVersion = "CFBundleVersion"
     }
@@ -96,9 +95,8 @@ final class ApplicationScanner {
 
         let info = bundle.infoDictionary ?? [:]
         guard (info[BundleKey.packageType] as? String) == BundleKey.applicationPackageType else { return nil }
-        guard !booleanValue(info[BundleKey.backgroundOnly]), !booleanValue(info[BundleKey.uiElement]) else {
-            return nil
-        }
+        guard !booleanValue(info[BundleKey.backgroundOnly]) else { return nil }
+        guard bundle.bundleIdentifier != Bundle.main.bundleIdentifier else { return nil }
         guard let executableURL = bundle.executableURL, fileManager.isExecutableFile(atPath: executableURL.path) else {
             Self.logger.notice(
                 "Skipped an application with no executable; item=\(url.lastPathComponent, privacy: .private(mask: .hash))"

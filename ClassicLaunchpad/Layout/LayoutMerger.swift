@@ -1,6 +1,8 @@
 import Foundation
 
 final class LayoutMerger {
+    private static let nameSortLocale = Locale(identifier: "en_US_POSIX")
+
     func merge(
         saved: LayoutDocument?,
         applications: [InstalledApplication]
@@ -11,9 +13,16 @@ final class LayoutMerger {
 
         let document: LayoutDocument
         if let saved, (1...LayoutDocument.currentVersion).contains(saved.version) {
-            document = saved.isCustomized
-                ? mergeSaved(saved, applicationsByKey: applicationsByKey)
-                : makeDefault(applications, shortcut: saved.shortcut)
+            switch saved.sortMode {
+            case .defaultOrder:
+                document = makeDefault(applications, shortcut: saved.shortcut)
+            case .name:
+                document = makeNameSorted(applications, shortcut: saved.shortcut)
+            case .recentlyAdded:
+                document = makeRecentlyAdded(applications, shortcut: saved.shortcut)
+            case .custom:
+                document = mergeSaved(saved, applicationsByKey: applicationsByKey)
+            }
         } else {
             document = makeDefault(applications)
         }
@@ -61,7 +70,29 @@ final class LayoutMerger {
         let unlistedSystems = remainingSystems.values.sorted(by: stableNameOrder)
         items.append(contentsOf: unlistedSystems.map { .application($0.identity) })
         items.append(contentsOf: users.map { .application($0.identity) })
-        return LayoutDocument(items: items, shortcut: shortcut)
+        return LayoutDocument(items: items, sortMode: .defaultOrder, shortcut: shortcut)
+    }
+
+    func makeNameSorted(
+        _ applications: [InstalledApplication],
+        shortcut: HotKeyConfiguration = .defaultConfiguration
+    ) -> LayoutDocument {
+        makeFlatLayout(
+            applications.sorted(by: nameOrder),
+            sortMode: .name,
+            shortcut: shortcut
+        )
+    }
+
+    func makeRecentlyAdded(
+        _ applications: [InstalledApplication],
+        shortcut: HotKeyConfiguration = .defaultConfiguration
+    ) -> LayoutDocument {
+        makeFlatLayout(
+            applications.sorted(by: recentlyAddedOrder),
+            sortMode: .recentlyAdded,
+            shortcut: shortcut
+        )
     }
 
     private func mergeSaved(
@@ -108,7 +139,19 @@ final class LayoutMerger {
         } ?? items.endIndex
         items.insert(contentsOf: newSystems.map { .application($0.identity) }, at: insertionIndex)
         items.append(contentsOf: newUsers.map { .application($0.identity) })
-        return LayoutDocument(items: items, isCustomized: true, shortcut: saved.shortcut)
+        return LayoutDocument(items: items, sortMode: .custom, shortcut: saved.shortcut)
+    }
+
+    private func makeFlatLayout(
+        _ applications: [InstalledApplication],
+        sortMode: ApplicationSortMode,
+        shortcut: HotKeyConfiguration
+    ) -> LayoutDocument {
+        LayoutDocument(
+            items: applications.map { .application($0.identity) },
+            sortMode: sortMode,
+            shortcut: shortcut
+        )
     }
 
     private func userOrder(_ lhs: InstalledApplication, _ rhs: InstalledApplication) -> Bool {
@@ -116,6 +159,33 @@ final class LayoutMerger {
             return lhs.dateAdded < rhs.dateAdded
         }
         return stableNameOrder(lhs, rhs)
+    }
+
+    private func recentlyAddedOrder(
+        _ lhs: InstalledApplication,
+        _ rhs: InstalledApplication
+    ) -> Bool {
+        if lhs.dateAdded != rhs.dateAdded {
+            return lhs.dateAdded > rhs.dateAdded
+        }
+        return stableNameOrder(lhs, rhs)
+    }
+
+    private func nameOrder(_ lhs: InstalledApplication, _ rhs: InstalledApplication) -> Bool {
+        let comparison = nameSortKey(lhs.displayName)
+            .localizedStandardCompare(nameSortKey(rhs.displayName))
+        if comparison != .orderedSame {
+            return comparison == .orderedAscending
+        }
+        return stableNameOrder(lhs, rhs)
+    }
+
+    private func nameSortKey(_ name: String) -> String {
+        let latinName = name.applyingTransform(.toLatin, reverse: false) ?? name
+        return latinName.folding(
+            options: [.caseInsensitive, .diacriticInsensitive, .widthInsensitive],
+            locale: Self.nameSortLocale
+        )
     }
 
     private func stableNameOrder(_ lhs: InstalledApplication, _ rhs: InstalledApplication) -> Bool {

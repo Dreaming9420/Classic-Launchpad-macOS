@@ -1,5 +1,25 @@
 import Foundation
 
+enum ApplicationSortMode: String, Codable, CaseIterable {
+    case defaultOrder
+    case name
+    case recentlyAdded
+    case custom
+
+    var title: String {
+        switch self {
+        case .defaultOrder:
+            return "默认顺序"
+        case .name:
+            return "按名称"
+        case .recentlyAdded:
+            return "最近添加"
+        case .custom:
+            return "自定义"
+        }
+    }
+}
+
 struct FolderLayout: Codable, Hashable {
     let id: UUID
     var name: String
@@ -63,21 +83,21 @@ enum LayoutItem: Codable, Hashable {
 }
 
 struct LayoutDocument: Codable, Hashable {
-    static let currentVersion = 3
+    static let currentVersion = 4
 
     var version: Int
     var items: [LayoutItem]
-    var isCustomized: Bool
+    var sortMode: ApplicationSortMode
     var shortcut: HotKeyConfiguration
 
     init(
         items: [LayoutItem],
-        isCustomized: Bool = false,
+        sortMode: ApplicationSortMode = .defaultOrder,
         shortcut: HotKeyConfiguration = .defaultConfiguration
     ) {
         version = Self.currentVersion
         self.items = items
-        self.isCustomized = isCustomized
+        self.sortMode = sortMode
         self.shortcut = shortcut
     }
 
@@ -85,6 +105,7 @@ struct LayoutDocument: Codable, Hashable {
         case version
         case items
         case isCustomized
+        case sortMode
         case shortcut
     }
 
@@ -92,9 +113,20 @@ struct LayoutDocument: Codable, Hashable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         version = try container.decode(Int.self, forKey: .version)
         items = try container.decode([LayoutItem].self, forKey: .items)
-        isCustomized = try container.decodeIfPresent(Bool.self, forKey: .isCustomized) ?? false
+        let wasCustomized = try container.decodeIfPresent(Bool.self, forKey: .isCustomized) ?? false
+        sortMode = try container.decodeIfPresent(ApplicationSortMode.self, forKey: .sortMode)
+            ?? (wasCustomized ? .custom : .defaultOrder)
         shortcut = try container.decodeIfPresent(HotKeyConfiguration.self, forKey: .shortcut)
             ?? .defaultConfiguration
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(Self.currentVersion, forKey: .version)
+        try container.encode(items, forKey: .items)
+        try container.encode(sortMode == .custom, forKey: .isCustomized)
+        try container.encode(sortMode, forKey: .sortMode)
+        try container.encode(shortcut, forKey: .shortcut)
     }
 }
 

@@ -21,6 +21,7 @@ final class SearchController {
         return LayoutSnapshot(
             document: LayoutDocument(
                 items: identities.map(LayoutItem.application),
+                sortMode: snapshot.document.sortMode,
                 shortcut: snapshot.document.shortcut
             ),
             applicationsByKey: snapshot.applicationsByKey

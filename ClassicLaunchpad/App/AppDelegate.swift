@@ -11,7 +11,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     )
 
     func applicationDidFinishLaunching(_ notification: Notification) {
-        NSApp.setActivationPolicy(.accessory)
+        NSApp.setActivationPolicy(.regular)
         hotKeyManager.handler = { [weak self] in
             self?.launchpadWindowController.toggle()
         }
@@ -20,6 +20,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             return hotKeyManager.register(configuration)
         }
         _ = hotKeyManager.register(.defaultConfiguration)
+        launchpadWindowController.startHotCornerMonitoring()
         applicationCatalog.delegate = launchpadWindowController
         applicationCatalog.start()
         configureMainMenu()
@@ -36,6 +37,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationWillTerminate(_ notification: Notification) {
         applicationCatalog.stop()
+        launchpadWindowController.stopHotCornerMonitoring()
         iconRepository.removeAllMemoryObjects()
         launchpadWindowController.hideImmediately()
     }

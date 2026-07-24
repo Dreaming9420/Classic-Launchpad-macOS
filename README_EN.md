@@ -25,7 +25,7 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Third--party_dependencies-0-31C653?style=flat-square" alt="No third-party dependencies">
   <img src="https://img.shields.io/badge/Data_processing-On_device-31C653?style=flat-square" alt="On-device data processing">
-  <img src="https://img.shields.io/badge/Version-1.0.0-blue?style=flat-square" alt="Version 1.0.0">
+  <img src="https://img.shields.io/badge/Version-1.1.0-blue?style=flat-square" alt="Version 1.1.0">
   <img src="https://img.shields.io/badge/License-MIT-yellow?style=flat-square" alt="MIT License">
 </p>
 
@@ -67,6 +67,13 @@
 
 Classic Launchpad is an independent third-party app built for macOS 26. It does not replace or modify any macOS system component; it simply provides a familiar, customizable way to launch apps.
 
+### What’s New in 1.1.0
+
+- Added a Show System Apps option, enabled by default
+- Added Default Order, Name, Recently Added, and Custom sorting; Chinese names are sorted by Pinyin in the shared A–Z order
+- Added configurable hot corners with modifier keys and warnings for conflicts with macOS system hot corners
+- Classic Launchpad can now appear in the full-screen Space of another app
+
 ### At a Glance
 
 | | |
@@ -74,6 +81,7 @@ Classic Launchpad is an independent third-party app built for macOS 26. It does 
 | 🔍 **Instant Search**<br>Find apps by localized name or bundle identifier. Just start typing. | 📁 **Folder Organization**<br>Stack icons into folders, rename them, reorder their contents, or move apps back out. |
 | 🖱️ **Drag, Drop, and Pages**<br>Reorder within a page, drag across edges, swipe horizontally, and follow page indicators. | ⌨️ **Complete Keyboard Control**<br>Navigate with arrows, open with Return, go back with Escape, and change pages with Command + arrows. |
 | 🔄 **Automatic Discovery**<br>Scans standard application locations and tracks local changes through Spotlight. | 💾 **Persistent Layout**<br>Automatically saves app order, pages, folder names, and the custom global shortcut. |
+| ⚙️ **Display and Sorting**<br>Choose whether to show system apps and sort by default order, name, recently added, or a custom layout. | ◲ **Hot Corner Launch**<br>Choose one screen corner, optionally require modifier keys, and open it from another app’s full-screen Space. |
 | ✨ **Native Visuals**<br>Builds a blurred background from the current desktop wallpaper and respects Reduce Motion. | 🗑️ **Safe Removal**<br>Only eligible Mac App Store apps can be moved to the Trash, always after confirmation. |
 
 <a id="showcase"></a>
@@ -112,7 +120,7 @@ Visit [Releases](https://github.com/Dreaming9420/Classic-Launchpad-macOS/release
 - macOS 26.0 or later
 - Prebuilt packages require neither Xcode nor third-party dependencies
 
-Classic Launchpad appears automatically after its first launch. It runs as an accessory app and does not remain in the Dock.
+Classic Launchpad appears automatically after its first launch. It appears in the Dock and can be quit with Command + Q.
 
 <a id="quick-start"></a>
 
@@ -168,7 +176,11 @@ Clicking the empty background or pressing the global shortcut again also dismiss
   <img src="https://raw.githubusercontent.com/Dreaming9420/Classic-Launchpad-macOS/main/assets/readme/settings.png" width="560" alt="Classic Launchpad settings">
 </p>
 
-Record a new global shortcut without granting Accessibility permission.
+Settings lets you record a new global shortcut, choose whether to show system apps, and configure app sorting and a hot corner without granting Accessibility permission.
+
+Sorting modes include Default Order, Name, Recently Added, and Custom. Name sorting transliterates Chinese names to Pinyin so Chinese and English names share one A–Z order. Dragging apps or editing folders switches the layout to Custom automatically. Switching from Custom to another sorting mode asks for confirmation first.
+
+The Hot Corner menu offers Off, Top Left, Top Right, Bottom Left, and Bottom Right. Moving the pointer into the selected corner opens Classic Launchpad immediately. Hold Command, Option, Control, or Shift while selecting a corner to require those modifier keys. If macOS already uses the same system hot corner, Classic Launchpad asks you to disable it in Desktop & Dock settings first.
 
 ### How to Restore the Default Layout
 

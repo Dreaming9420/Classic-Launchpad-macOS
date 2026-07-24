@@ -7,7 +7,7 @@ final class LaunchpadPanel: NSPanel {
     init(screen: NSScreen) {
         super.init(
             contentRect: screen.frame,
-            styleMask: [.borderless],
+            styleMask: [.borderless, .nonactivatingPanel],
             backing: .buffered,
             defer: false
         )
@@ -17,7 +17,12 @@ final class LaunchpadPanel: NSPanel {
         hasShadow = false
         animationBehavior = .none
         level = NSWindow.Level(rawValue: NSWindow.Level.mainMenu.rawValue + 1)
-        collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary, .stationary, .ignoresCycle]
+        collectionBehavior = [
+            .canJoinAllApplications,
+            .canJoinAllSpaces,
+            .stationary,
+            .ignoresCycle
+        ]
         isMovable = false
         hidesOnDeactivate = false
         acceptsMouseMovedEvents = true
