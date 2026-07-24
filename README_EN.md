@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Dreaming9420/Classic-Launchpad-macOS/main/ClassicLaunchpad/Resources/Assets.xcassets/AppIcon.appiconset/AppIcon-128.png" width="112" height="112" alt="Classic Launchpad icon">
+  <img src="./ClassicLaunchpad/Resources/Assets.xcassets/AppIcon.appiconset/AppIcon-128.png" width="112" height="112" alt="Classic Launchpad icon">
 </p>
 
 <h1 align="center">Classic Launchpad</h1>
@@ -17,29 +17,22 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/macOS-26.0%2B-000000?style=for-the-badge&logo=apple&logoColor=white" alt="macOS 26.0+">
-  <img src="https://img.shields.io/badge/Swift-5.0-F05138?style=for-the-badge&logo=swift&logoColor=white" alt="Swift 5.0">
-  <img src="https://img.shields.io/badge/UI-AppKit-147EFB?style=for-the-badge" alt="AppKit">
-</p>
-
-<p align="center">
-  <img src="https://img.shields.io/badge/Third--party_dependencies-0-31C653?style=flat-square" alt="No third-party dependencies">
-  <img src="https://img.shields.io/badge/Data_processing-On_device-31C653?style=flat-square" alt="On-device data processing">
-  <img src="https://img.shields.io/badge/Version-1.1.0-blue?style=flat-square" alt="Version 1.1.0">
-  <img src="https://img.shields.io/badge/License-MIT-yellow?style=flat-square" alt="MIT License">
-</p>
-
-<p align="center">
-  <a href="#highlights">Highlights</a> ·
-  <a href="#showcase">Showcase</a> ·
   <a href="#download">Download</a> ·
-  <a href="#controls">Controls</a> ·
-  <a href="#restore-layout">Restore Layout</a> ·
+  <a href="#highlights">Highlights</a> ·
+  <a href="#controls">User Guide</a> ·
+  <a href="#build-from-source">Build from Source</a> ·
   <a href="#privacy">Privacy</a>
 </p>
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Dreaming9420/Classic-Launchpad-macOS/main/assets/readme/launchpad-overview.jpg" width="100%" alt="Classic Launchpad main screen">
+  <img src="https://img.shields.io/badge/macOS-26.0%2B-000000?style=for-the-badge&logo=apple&logoColor=white" alt="macOS 26.0+">
+  <img src="https://img.shields.io/badge/Swift-5.0-F05138?style=for-the-badge&logo=swift&logoColor=white" alt="Swift 5.0">
+  <img src="https://img.shields.io/badge/UI-AppKit-147EFB?style=for-the-badge" alt="AppKit">
+  <img src="https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge" alt="MIT License">
+</p>
+
+<p align="center">
+  <img src="./assets/readme/launchpad-overview.jpg" width="100%" alt="Classic Launchpad main screen">
 </p>
 
 <p align="center"><em>The familiar full-screen grid, page indicators, blurred wallpaper, and app layout.</em></p>
@@ -48,31 +41,7 @@
 
 ## ✨ Highlights
 
-<table>
-  <tr>
-    <td width="33%" align="center">
-      <h3>🖥️ Classic by Design</h3>
-      <p>Inspired by Launchpad from macOS 15 and earlier, including its full-screen grid, pages, folders, and jiggle mode.</p>
-    </td>
-    <td width="33%" align="center">
-      <h3>⚡ Native and Fluid</h3>
-      <p>Built with Swift, AppKit, and Core Animation, with trackpad gestures, keyboard navigation, and multi-display support.</p>
-    </td>
-    <td width="33%" align="center">
-      <h3>🔒 Local by Default</h3>
-      <p>No accounts, telemetry, or cloud sync. App discovery, search, and layout storage stay entirely on your Mac.</p>
-    </td>
-  </tr>
-</table>
-
-Classic Launchpad is an independent third-party app built for macOS 26. It does not replace or modify any macOS system component; it simply provides a familiar, customizable way to launch apps.
-
-### What’s New in 1.1.0
-
-- Added a Show System Apps option, enabled by default
-- Added Default Order, Name, Recently Added, and Custom sorting; Chinese names are sorted by Pinyin in the shared A–Z order
-- Added configurable hot corners with modifier keys and warnings for conflicts with macOS system hot corners
-- Classic Launchpad can now appear in the full-screen Space of another app
+Inspired by Launchpad from macOS 15 and earlier, Classic Launchpad is built with Swift, AppKit, and Core Animation. It does not replace or modify any system component and includes no accounts, telemetry, or cloud sync.
 
 ### At a Glance
 
@@ -81,7 +50,7 @@ Classic Launchpad is an independent third-party app built for macOS 26. It does 
 | 🔍 **Instant Search**<br>Find apps by localized name or bundle identifier. Just start typing. | 📁 **Folder Organization**<br>Stack icons into folders, rename them, reorder their contents, or move apps back out. |
 | 🖱️ **Drag, Drop, and Pages**<br>Reorder within a page, drag across edges, swipe horizontally, and follow page indicators. | ⌨️ **Complete Keyboard Control**<br>Navigate with arrows, open with Return, go back with Escape, and change pages with Command + arrows. |
 | 🔄 **Automatic Discovery**<br>Scans standard application locations and tracks local changes through Spotlight. | 💾 **Persistent Layout**<br>Automatically saves app order, pages, folder names, and the custom global shortcut. |
-| ⚙️ **Display and Sorting**<br>Choose whether to show system apps and sort by default order, name, recently added, or a custom layout. | ◲ **Hot Corner Launch**<br>Choose one screen corner, optionally require modifier keys, and open it from another app’s full-screen Space. |
+| ⚙️ **Display and Sorting**<br>Choose whether to show system apps and sort by default order, name, recently added, or a custom layout. | ◲ **Hot Corner Launch**<br>Choose a screen corner with optional modifier keys, system-conflict warnings, and support for another app’s full-screen Space. |
 | ✨ **Native Visuals**<br>Builds a blurred background from the current desktop wallpaper and respects Reduce Motion. | 🗑️ **Safe Removal**<br>Only eligible Mac App Store apps can be moved to the Trash, always after confirmation. |
 
 <a id="showcase"></a>
@@ -90,8 +59,8 @@ Classic Launchpad is an independent third-party app built for macOS 26. It does 
 
 <table>
   <tr>
-    <td width="50%"><img src="https://raw.githubusercontent.com/Dreaming9420/Classic-Launchpad-macOS/main/assets/readme/folders.jpg" alt="Folders in Classic Launchpad"></td>
-    <td width="50%"><img src="https://raw.githubusercontent.com/Dreaming9420/Classic-Launchpad-macOS/main/assets/readme/edit-mode.jpg" alt="Edit mode in Classic Launchpad"></td>
+    <td width="50%"><img src="./assets/readme/folders.jpg" alt="Folders in Classic Launchpad"></td>
+    <td width="50%"><img src="./assets/readme/edit-mode.jpg" alt="Edit mode in Classic Launchpad"></td>
   </tr>
   <tr>
     <td align="center"><strong>Folders</strong><br>Open, rename, and organize apps inside folders</td>
@@ -108,23 +77,22 @@ Classic Launchpad is an independent third-party app built for macOS 26. It does 
   <a href="https://github.com/Dreaming9420/Classic-Launchpad-macOS/releases/latest/download/ClassicLaunchpad.zip"><img src="https://img.shields.io/badge/Download-ZIP-555555?style=for-the-badge&logo=apple&logoColor=white" alt="Download ZIP"></a>
 </p>
 
-| Package | Best for | Installation |
-| --- | --- | --- |
-| [`ClassicLaunchpad.dmg`](https://github.com/Dreaming9420/Classic-Launchpad-macOS/releases/latest/download/ClassicLaunchpad.dmg) | Recommended for most users | Open the DMG and drag `ClassicLaunchpad.app` into Applications |
-| [`ClassicLaunchpad.zip`](https://github.com/Dreaming9420/Classic-Launchpad-macOS/releases/latest/download/ClassicLaunchpad.zip) | Portable archive | Extract it and drag `ClassicLaunchpad.app` into Applications |
+The DMG is recommended: open it and drag `ClassicLaunchpad.app` into Applications. The ZIP is available for direct extraction. Visit [Releases](https://github.com/Dreaming9420/Classic-Launchpad-macOS/releases) for previous versions and release notes.
 
-Visit [Releases](https://github.com/Dreaming9420/Classic-Launchpad-macOS/releases) for every version, release notes, and previous packages.
+> [!IMPORTANT]
+> The current packages are not signed with an Apple Developer ID or notarized. If macOS blocks the app on first launch, open System Settings → Privacy & Security, scroll to the Security section, and click Open Anyway. You only need to do this once.
 
 ### Requirements
 
 - macOS 26.0 or later
+- Apple silicon or Intel Mac
 - Prebuilt packages require neither Xcode nor third-party dependencies
 
-Classic Launchpad appears automatically after its first launch. It appears in the Dock and can be quit with Command + Q.
+Classic Launchpad appears automatically after its first launch and continues running in the Dock. Press Control + Command + L to show or hide it at any time, or Command + Q to quit completely.
 
-<a id="quick-start"></a>
+<a id="build-from-source"></a>
 
-### Run from Source
+### Build from Source
 
 Building from source requires Xcode 26.0 or later:
 
@@ -139,23 +107,15 @@ You can also open the project from its directory:
 open ClassicLaunchpad.xcodeproj
 ```
 
-<details>
-<summary><strong>Move the built app into Applications</strong></summary>
-
-1. Press Command + B in Xcode.
-2. Select `Product` → `Show Build Folder in Finder`.
-3. Find `ClassicLaunchpad.app` in the `Products` directory for the selected configuration.
-4. Drag it into `/Applications`.
-
-</details>
-
 <a id="controls"></a>
 
-## 🎮 Controls
+## 🎮 User Guide
+
+### Common Controls
 
 | Action | Control |
 | --- | --- |
-| Show or hide Classic Launchpad | Control + Option + Space (customizable) |
+| Show or hide Classic Launchpad | Control + Command + L (customizable) |
 | Change pages | Two-finger horizontal swipe, or Command + ← / → |
 | Search apps | Start typing |
 | Select an app or folder | Arrow keys |
@@ -170,34 +130,21 @@ Clicking the empty background or pressing the global shortcut again also dismiss
 
 <a id="restore-layout"></a>
 
-## ⚙️ Settings and Restore Default Layout
+### Settings and Layout
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Dreaming9420/Classic-Launchpad-macOS/main/assets/readme/settings.png" width="560" alt="Classic Launchpad settings">
+  <img src="./assets/readme/settings.png" width="560" alt="Classic Launchpad settings">
 </p>
 
-Settings lets you record a new global shortcut, choose whether to show system apps, and configure app sorting and a hot corner without granting Accessibility permission.
+Settings lets you record a new global shortcut, choose whether to show system apps (enabled by default), and configure app sorting and a hot corner without granting Accessibility permission.
 
 Sorting modes include Default Order, Name, Recently Added, and Custom. Name sorting transliterates Chinese names to Pinyin so Chinese and English names share one A–Z order. Dragging apps or editing folders switches the layout to Custom automatically. Switching from Custom to another sorting mode asks for confirmation first.
 
-The Hot Corner menu offers Off, Top Left, Top Right, Bottom Left, and Bottom Right. Moving the pointer into the selected corner opens Classic Launchpad immediately. Hold Command, Option, Control, or Shift while selecting a corner to require those modifier keys. If macOS already uses the same system hot corner, Classic Launchpad asks you to disable it in Desktop & Dock settings first.
+The Hot Corner menu offers Off, Top Left, Top Right, Bottom Left, and Bottom Right. Moving the pointer into the selected corner opens Classic Launchpad immediately. You can hold Command, Option, Control, or Shift while selecting a corner; once configured, Classic Launchpad opens only when you hold those keys and move the pointer into that corner. If macOS already uses the same system hot corner, Classic Launchpad asks you to disable it in Desktop & Dock settings first.
 
-### How to Restore the Default Layout
+#### Restore the Default Layout
 
-1. Show Classic Launchpad.
-2. Press Command + , to open Settings.
-3. Click “恢复默认布局” (Restore Default Layout).
-4. Click “恢复” (Restore) in the confirmation dialog.
-
-Classic Launchpad immediately regenerates and saves a layout based on the apps currently installed.
-
-| Restored | Left unchanged |
-| --- | --- |
-| App order | Installed applications and their files |
-| Page distribution | Current global shortcut |
-| Folders and folder names | macOS system settings |
-
-Restoring cannot be undone. Back up `Layout.json` first if you want to preserve the current layout.
+Click Restore Default Layout in Settings to reset app order, pages, and folders. This does not remove applications or change the current shortcut or macOS system settings. Restoring cannot be undone; back up `Layout.json` first if you want to preserve your current layout.
 
 <a id="privacy"></a>
 
@@ -211,17 +158,6 @@ The layout and shortcut configuration are stored at:
 
 - Application scanning, Spotlight metadata access, search, and layout storage all happen locally
 - The current implementation contains no network requests, user accounts, telemetry, or cloud sync
-- If the layout file becomes unreadable, it is preserved as a timestamped `Layout.corrupt-*.json` before a new layout is generated
-
-### App Removal Boundaries
-
-The remove button appears only when an app meets all of these conditions:
-
-- It is installed in `/Applications` or `~/Applications`
-- It contains a Mac App Store receipt
-- It is not a system app
-
-The app asks for confirmation before using the macOS system API to move an application to the Trash. Other apps do not display the remove button.
 
 ## 🧩 Under the Hood
 
@@ -233,21 +169,15 @@ The app asks for confirmation before using the macOS system API to move an appli
 | Launch and removal | `NSWorkspace` |
 | Local storage | Codable JSON with atomic writes |
 
-The main source is under `ClassicLaunchpad/`, and the complete `.app` should be built from `ClassicLaunchpad.xcodeproj`. A `Package.swift` manifest is also included for source checks and Swift Package Manager builds.
-
-## 📌 Known Limitations
-
-- The app interface is currently available in Simplified Chinese only
-- Layout data does not sync between Macs
-- App removal is limited to eligible Mac App Store applications
+The main source is under `ClassicLaunchpad/`. Build the complete, runnable `.app` from `ClassicLaunchpad.xcodeproj`; the included `Package.swift` is primarily intended for source checks and Swift Package Manager builds.
 
 ## 🤝 Contributing
 
-Reproducible bug reports and focused improvement proposals are welcome through Issues. Pull Requests should stay narrowly scoped and build successfully with Xcode before submission.
+Issues and suggestions are welcome, as are focused Pull Requests that build successfully with Xcode.
 
 ## 📄 License
 
-This project is available under the [MIT License](./LICENSE). You may use, copy, modify, and distribute it as long as the original copyright and license notice are preserved.
+This project is available under the [MIT License](./LICENSE).
 
 ## Disclaimer
 

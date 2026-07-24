@@ -93,7 +93,7 @@ final class SettingsWindowController: NSWindowController, ShortcutRecorderViewDe
         recorderView.delegate = self
         contentView.addSubview(recorderView)
 
-        let hint = NSTextField(labelWithString: "点击快捷键框，然后按下新的组合键。无需辅助功能权限。")
+        let hint = NSTextField(labelWithString: "点击快捷键框，按下想要使用的组合键。无需授予辅助功能权限。")
         hint.textColor = .secondaryLabelColor
         hint.font = NSFont.systemFont(ofSize: 12)
         hint.frame = CGRect(x: 28, y: 308, width: 390, height: 20)
@@ -131,7 +131,7 @@ final class SettingsWindowController: NSWindowController, ShortcutRecorderViewDe
         hotCornerButton.frame = CGRect(x: 190, y: 130, width: 220, height: 32)
         contentView.addSubview(hotCornerButton)
 
-        let hotCornerHint = NSTextField(labelWithString: "按住修饰键选择，可设置组合键触发。")
+        let hotCornerHint = NSTextField(labelWithString: "选择触发角时按住修饰键，可让该角落仅在按住对应按键时打开启动台。")
         hotCornerHint.textColor = .secondaryLabelColor
         hotCornerHint.font = NSFont.systemFont(ofSize: 12)
         hotCornerHint.frame = CGRect(x: 28, y: 96, width: 384, height: 20)

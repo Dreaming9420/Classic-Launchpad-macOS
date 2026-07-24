@@ -116,8 +116,11 @@ struct LayoutDocument: Codable, Hashable {
         let wasCustomized = try container.decodeIfPresent(Bool.self, forKey: .isCustomized) ?? false
         sortMode = try container.decodeIfPresent(ApplicationSortMode.self, forKey: .sortMode)
             ?? (wasCustomized ? .custom : .defaultOrder)
-        shortcut = try container.decodeIfPresent(HotKeyConfiguration.self, forKey: .shortcut)
+        let savedShortcut = try container.decodeIfPresent(HotKeyConfiguration.self, forKey: .shortcut)
             ?? .defaultConfiguration
+        shortcut = savedShortcut == .legacyDefaultConfiguration
+            ? .defaultConfiguration
+            : savedShortcut
     }
 
     func encode(to encoder: Encoder) throws {

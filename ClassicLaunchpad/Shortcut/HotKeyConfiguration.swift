@@ -5,6 +5,11 @@ struct HotKeyConfiguration: Codable, Hashable {
     let modifierRawValue: UInt
 
     static let defaultConfiguration = HotKeyConfiguration(
+        keyCode: HotKeyDefaults.launchpadKeyCode,
+        modifierRawValue: NSEvent.ModifierFlags([.control, .command]).rawValue
+    )
+
+    static let legacyDefaultConfiguration = HotKeyConfiguration(
         keyCode: HotKeyDefaults.spaceKeyCode,
         modifierRawValue: NSEvent.ModifierFlags([.control, .option]).rawValue
     )
@@ -30,6 +35,8 @@ struct HotKeyConfiguration: Codable, Hashable {
 }
 
 private enum HotKeyDefaults {
+    static let launchpadKeyCode: UInt32 = 37
+
     static let spaceKeyCode: UInt32 = 49
 }
 
